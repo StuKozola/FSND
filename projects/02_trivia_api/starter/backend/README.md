@@ -222,9 +222,11 @@ Response:
 - Delete a question from the questions inventory give question_id (integer)
 - _Request Arguments:_ question_id
 - _Returns:_ An object with keys:values of deleted:question_id, succes:True
-- Error code returned for invalid question_id is 
+- Error code returned for invalid question_id is 422
+
 Example:
 `curl -X DELETE http://localhost:5000/questions/5`
+
 Response:
 ```
 {
@@ -234,18 +236,107 @@ Response:
 ```
 
 ### `POST '/questions`
+- Add a new question and answer set
+- _Request Arguments:_ None
+- _Request Body:_ json object with fields defining question, answer, catergory, and difficulty
+- _Returns:_ An object with keys:values of created: question_id, succes:True
+- Error code returned for invalid question_id is 422
+
 Example:
-`curl http://localhost:5000/questions` or `curl http://localhost:5000/questions?page=1`
+
+`curl --request POST -H "Content-Type: application/json" -d '{"question": "What is the answer to the universe","answer":"42","difficulty": "1","category": "5"}' http://localhost:5000/questions`
+
 Response:
+
+```
+{
+  "created": 24, 
+  "success": true
+}
+```
 ### `POST '/questions/search'`
+- Search for a question based upon search term.
+- _Request Arguments:_ None
+- _Request Body:_ json object with fields defining search term
+- _Returns:_ An object with keys:values of questions: list of matching questions, total_questions: number of questions found, current_category: None, success: true if found
+- Error code returned for invalid search query is 404
+
 Example:
-`curl http://localhost:5000/questions` or `curl http://localhost:5000/questions?page=1`
+`curl --request POST -H "Content-Type: application/json" -d '{"searchTerm":"medicine"}' http://localhost:5000/questions/search`
+
 Response:
+```
+{
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Blood", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 22, 
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 1
+}
+```
 ### `GET '/categories/{category_id}/questions'`
+- Get the questions associated to a category
+- _Request Arguments:_ category_id
+- _Returns:_ A json object with keys:values of questions: questions in category, total_questions: count of returned questions, current_category: the current category_id, success: trud if found a result
+- Error code returned for invalid category_id is 422
+
 Example:
-`curl http://localhost:5000/questions` or `curl http://localhost:5000/questions?page=1`
+
+`curl http://localhost:5000/categories/6/questions`
+
 Response:
+```
+{
+  "current_category": 6, 
+  "questions": [
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 2
+}
+```
 ### `POST '/quizzes'`
+- Get random questions remaining (play the quiz)
+- _Request Arguments:_ none
+- _Request Body:_ json object with fields defining quiz categry and previous questions
+- _Returns:_ An object with keys:values of question: randomized question not yet seen, success: true if question found
+
+- Error code returned for invalid question is 422 
+
 Example:
-`curl http://localhost:5000/questions` or `curl http://localhost:5000/questions?page=1`
+`curl --request POST -H "Content-Type: application/json" -d '{"previous_questions":[],"quiz_category":{"type":"Sports","id":6}}' http://localhost:5000/quizzes`
+
 Response:
+
+```
+{
+  "question": {
+    "answer": "Brazil", 
+    "category": 6, 
+    "difficulty": 3, 
+    "id": 10, 
+    "question": "Which is the only team to play in every soccer World Cup tournament?"
+  }, 
+  "success": true
+}
+```
