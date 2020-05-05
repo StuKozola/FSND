@@ -11,3 +11,8 @@ venv
 .Trashes
 ehthumbs.db
 Thumbs.db
+BasicFlaskAuth/env/
+FlaskRecap/env/
+projects/01_fyyur/starter_code/env/
+projects/02_trivia_api/starter/backend/env/
+projects/02_trivia_api/starter/frontend/node_modules/

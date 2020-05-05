@@ -123,12 +123,14 @@ Response:
 }
 ```
 ### `GET '/questions?page={page_number:integer}'`
-- Fetches a dictionary of categories, current category, and a list of questions.  If page does note exist ir returns error message with status code 404
+- Fetches a dictionary of categories, current category, and a list of questions.  If page does note exist it returns error message with status code 404
 - _Request Arguments:_ optional page_number
 - _Returns:_ An object with keys categories, current_category, and questions.  Categories contains a object of id: category_string key:value pairs.  Questions return a object of key:value pairs id, category, difficulty, question, and answer.
 - Error code returned for invalid page number is 404
+
 Example:
 `curl http://localhost:5000/questions` or `curl http://localhost:5000/questions?page=1`
+
 Response:
 ```
 {
@@ -219,7 +221,7 @@ Response:
 ```
 
 ### `DELETE '/questions/{question_id}'`
-- Delete a question from the questions inventory give question_id (integer)
+- Delete a question from the questions inventory given question_id (integer)
 - _Request Arguments:_ question_id
 - _Returns:_ An object with keys:values of deleted:question_id, succes:True
 - Error code returned for invalid question_id is 422
