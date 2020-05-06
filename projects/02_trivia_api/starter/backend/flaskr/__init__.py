@@ -29,8 +29,8 @@ def isempty_404(q):
 def isempty_422(body, required_field):
     # abort if body of json required field is empty
     for f in required_field:
-      if not (f in body):
-        abort(422)
+        if not (f in body):
+            abort(422)
     return False
 
 
@@ -39,7 +39,8 @@ def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
 
-    # # Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
+    # Set up CORS. Allow '*' for origins.
+    # Delete the sample route after completing the TODOs
     cors = CORS(app, resource={r'/*': {'origins': '*'}})
 
     # Use the after_request decorator to set Access-Control-Allow
@@ -118,7 +119,7 @@ def create_app(test_config=None):
             return jsonify({
                 'created': q.id,
                 'success': True
-                })
+            })
 
         except:
             abort(422)
@@ -129,21 +130,21 @@ def create_app(test_config=None):
     @app.route('/questions/search', methods=['POST'])
     def search_questions():
         try:
-          term = request.get_json().get('searchTerm', None)
-          questions = Question.query.filter(
-            Question.question.ilike(f'%{term}%')).all()
+            term = request.get_json().get('searchTerm', None)
+            questions = Question.query.filter(
+                Question.question.ilike(f'%{term}%')).all()
 
-          isempty_404(questions)
+            isempty_404(questions)
 
-          return jsonify({
-            'questions': [q.format() for q in questions],
-            'total_questions': len(questions),
-            'current_category': None,
-            'success': True
+            return jsonify({
+                'questions': [q.format() for q in questions],
+                'total_questions': len(questions),
+                'current_category': None,
+                'success': True
             })
 
         except:
-          abort(404)
+            abort(404)
 
     # Get questions based on category.
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
@@ -153,7 +154,7 @@ def create_app(test_config=None):
                 Question.category == str(category_id)).all()
 
             isempty_404(questions)
-            
+
             return jsonify({
                 'questions': [q.format() for q in questions],
                 'total_questions': len(questions),
@@ -180,14 +181,15 @@ def create_app(test_config=None):
                 question_pool = Question.query.filter(
                     Question.id.notin_((previous_questions))).all()
             else:
-                question_pool = Question.query.filter_by(category=category['id']).filter(
+                question_pool = Question.query.filter_by(
+                    category=category['id']).filter(
                     Question.id.notin_((previous_questions))).all()
 
             if len(question_pool) > 0:
-              index = random.randrange(0, len(question_pool))
-              q = question_pool[index].format()
+                index = random.randrange(0, len(question_pool))
+                q = question_pool[index].format()
             else:
-              q = None
+                q = None
 
             return jsonify({
                 'question': q,
